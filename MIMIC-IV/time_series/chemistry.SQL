@@ -1,4 +1,4 @@
--- Chemistry Values include albumin, aniongap, bicarbonate, bun, calcium, chloride, glucose (from the lab), sodium, potassium
+-- Chemistry Values include albumin, aniongap, bicarbonate, bun, calcium, chloride, glucose (from the lab), sodium, potassium, ph
 
 DROP TABLE IF EXISTS `golden-rite-376204.mimiciv_pulseOx.pairs_blood_vitals`;
 CREATE TABLE `golden-rite-376204.mimiciv_pulseOx.pairs_blood_vitals` AS
@@ -225,6 +225,49 @@ WITH
 
 )
 
+, ph AS (
+  SELECT * FROM(
+    SELECT
+      pairs.subject_id
+    , ph
+    , pairs.SaO2_timestamp
+    , TIMESTAMP_DIFF(bg.charttime, pairs.SaO2_timestamp, MINUTE) AS delta_ph
+    , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
+                        ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, bg.charttime, MINUTE)) ASC) AS seq
+
+    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+
+    LEFT JOIN `physionet-data.mimiciv_derived.bg` 
+    AS bg
+    ON bg.subject_id = pairs.subject_id
+    AND ph IS NOT NULL
+
+  ) 
+  WHERE seq = 1
+
+)
+
+, lactate AS (
+  SELECT * FROM(
+    SELECT
+      pairs.subject_id
+    , lactate
+    , pairs.SaO2_timestamp
+    , TIMESTAMP_DIFF(bg.charttime, pairs.SaO2_timestamp, MINUTE) AS delta_lactate
+    , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
+                        ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, bg.charttime, MINUTE)) ASC) AS seq
+
+    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+
+    LEFT JOIN `physionet-data.mimiciv_derived.bg` 
+    AS bg
+    ON bg.subject_id = pairs.subject_id
+    AND lactate IS NOT NULL
+
+  ) 
+  WHERE seq = 1
+
+)
 
 SELECT 
     pairs.subject_id
@@ -250,6 +293,10 @@ SELECT
   , sodium.sodium
   , potassium.delta_potassium
   , potassium.potassium
+  , ph.delta_ph
+  , ph.ph
+  , lactate.delta_lactate
+  , lactate.lactate
 
 FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
@@ -292,5 +339,13 @@ AND sodium.SaO2_timestamp = pairs.SaO2_timestamp
 LEFT JOIN potassium
 ON potassium.subject_id = pairs.subject_id
 AND potassium.SaO2_timestamp = pairs.SaO2_timestamp
+
+LEFT JOIN ph
+ON ph.subject_id = pairs.subject_id
+AND ph.SaO2_timestamp = pairs.SaO2_timestamp
+
+LEFT JOIN lactate
+ON lactate.subject_id = pairs.subject_id
+AND lactate.SaO2_timestamp = pairs.SaO2_timestamp
 
 ORDER BY subject_id, stay_id, SaO2_timestamp
