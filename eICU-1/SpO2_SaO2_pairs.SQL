@@ -42,7 +42,7 @@ WITH pairs AS (
   -- vitalAperiodic Table -> cardiacoutput needs an arterial line
   SELECT patientunitstayid, 1 AS arterial_line
   FROM `physionet-data.eicu_crd.vitalaperiodic`
-  WHERE cardiacoutput IS NOT NULL AND cardiacoutput >0.8
+  WHERE cardiacoutput IS NOT NULL AND cardiacoutput > 0.8
   GROUP BY patientunitstayid
 
   UNION DISTINCT
@@ -93,9 +93,9 @@ WITH pairs AS (
 SELECT DISTINCT
     pairs.patientunitstayid
   , SaO2_offset
-  , sao2_vals.labResult AS SaO2
+  , sao2_vals.labResult AS SaO2 -- use Lab Result to Get NUMERIC values only
   , (SpO2_offset - SaO2_offset) AS delta_SpO2
-  , spo2_vals.spo2 AS SpO2
+  , spo2_vals.spo2 AS SpO2 
   , CASE WHEN spo2_vals.spo2 >= 88 AND sao2_vals.labResult < 88 THEN 1 ELSE 0 END AS hidden_hypoxemia
   , CASE WHEN arterial_line = 1 THEN 1 ELSE 0 END AS arterial_line
 
