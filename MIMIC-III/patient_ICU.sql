@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS `golden-rite-376204.mimiciii_pulseOx.patient_ICU`;
+CREATE TABLE `golden-rite-376204.mimiciii_pulseOx.patient_ICU` AS
+
 SELECT DISTINCT
 icu.subject_id
 , icu.icustay_id
