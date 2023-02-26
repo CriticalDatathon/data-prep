@@ -69,10 +69,16 @@ icu.subject_id
   ) THEN 'Asian'
   ELSE 'Other' END AS race_group
 
+-- CareVue table, to make sure that there are no matching subjects with MIMIC-IV
+FROM `golden-rite-376204.mimiciii_pulseOx.CareVue_subset `
+AS carevue
 
 -- ICU stays
-FROM physionet-data.mimiciii_derived.icustay_detail
+LEFT JOIN physionet-data.mimiciii_derived.icustay_detail
 AS icu
+ON carevue.subject_id=icu.subject_id 
+AND carevue.hadm_id=icu.hadm_id 
+AND carevue.icustay_id=icu.icustay_id
 
 -- Hospital Admissions
 LEFT JOIN physionet-data.mimiciii_clinical.admissions
