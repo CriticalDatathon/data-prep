@@ -1,3 +1,5 @@
+-- Vital signs include heart rate, blood pressure, respiration rate, temperature, glucose. Missing: rhythm
+
 DROP TABLE IF EXISTS `golden-rite-376204.mimiciii_pulseOx.vital_signs`;
 CREATE TABLE `golden-rite-376204.mimiciii_pulseOx.vital_signs` AS
 

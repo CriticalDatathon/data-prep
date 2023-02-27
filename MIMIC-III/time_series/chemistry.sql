@@ -1,50 +1,10 @@
+-- Chemistry Values include bicarbonate, calcium, chloride, glucose (from the lab), sodium, potassium, pH, bun, albumin, aniongap
+
+DROP TABLE IF EXISTS `golden-rite-376204.mimiciii_pulseOx.pairs_blood_vitals`;
+CREATE TABLE `golden-rite-376204.mimiciii_pulseOx.pairs_blood_vitals` AS
+
 WITH
-hematocrit AS(
-
-  SELECT * FROM (
-    SELECT
-        pairs.icustay_id
-      , pairs.SaO2_timestamp
-      , TIMESTAMP_DIFF(pairs.SaO2_timestamp, hematocrit.charttime, MINUTE) AS delta_hematocrit
-      , ROW_NUMBER() OVER(PARTITION BY pairs.icustay_id, pairs.SaO2_timestamp
-                          ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, hematocrit.charttime, MINUTE)) ASC ) AS seq
-      , hematocrit.hematocrit
-
-    FROM `golden-rite-376204.mimiciii_pulseOx.SaO2_SpO2_pairs` pairs
-
-    LEFT JOIN `physionet-data.mimiciii_derived.pivoted_bg` hematocrit
-
-    ON hematocrit.icustay_id = pairs.icustay_id
-    AND hematocrit.hematocrit IS NOT NULL
-      
-    ) 
-    WHERE seq = 1
-)
-
-, hemoglobin AS(
-
-  SELECT * FROM (
-    SELECT
-        pairs.icustay_id
-      , pairs.SaO2_timestamp
-      , TIMESTAMP_DIFF(pairs.SaO2_timestamp, hemoglobin.charttime, MINUTE) AS delta_hemoglobin
-      , ROW_NUMBER() OVER(PARTITION BY pairs.icustay_id, pairs.SaO2_timestamp
-                          ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, hemoglobin.charttime, MINUTE)) ASC ) AS seq
-      , hemoglobin.hemoglobin
-
-    FROM `golden-rite-376204.mimiciii_pulseOx.SaO2_SpO2_pairs` pairs
-
-    LEFT JOIN `physionet-data.mimiciii_derived.pivoted_bg` hemoglobin
-
-    ON hemoglobin.icustay_id = pairs.icustay_id
-    AND hemoglobin.hemoglobin IS NOT NULL
-      
-    ) 
-    WHERE seq = 1
-)
-
-
-, potassium AS(
+potassium AS(
 
   SELECT * FROM (
     SELECT
@@ -83,6 +43,93 @@ hematocrit AS(
 
     ON bicarbonate.icustay_id = pairs.icustay_id
     AND bicarbonate.bicarbonate IS NOT NULL
+      
+    ) 
+    WHERE seq = 1
+)
+
+, bun AS(
+
+  SELECT * FROM (
+    SELECT
+        pairs.subject_id
+      , pairs.SaO2_timestamp
+      , TIMESTAMP_DIFF(pairs.SaO2_timestamp, bun.charttime, MINUTE) AS delta_bun
+      , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
+                          ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, bun.charttime, MINUTE)) ASC ) AS seq
+      , bun.bun
+
+    FROM `golden-rite-376204.mimiciii_pulseOx.SaO2_SpO2_pairs` pairs
+
+    LEFT JOIN `physionet-data.mimiciii_derived.pivoted_lab` bun
+
+    ON bun.subject_id = pairs.subject_id
+    AND bun.bun IS NOT NULL
+      
+    ) 
+    WHERE seq = 1
+)
+
+, albumin AS(
+
+  SELECT * FROM (
+    SELECT
+        pairs.subject_id
+      , pairs.SaO2_timestamp
+      , TIMESTAMP_DIFF(pairs.SaO2_timestamp, albumin.charttime, MINUTE) AS delta_albumin
+      , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
+                          ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, albumin.charttime, MINUTE)) ASC ) AS seq
+      , albumin.albumin
+
+    FROM `golden-rite-376204.mimiciii_pulseOx.SaO2_SpO2_pairs` pairs
+
+    LEFT JOIN `physionet-data.mimiciii_derived.pivoted_lab` albumin
+
+    ON albumin.subject_id = pairs.subject_id
+    AND albumin.albumin IS NOT NULL
+      
+    ) 
+    WHERE seq = 1
+)
+
+, aniongap AS(
+
+  SELECT * FROM (
+    SELECT
+        pairs.subject_id
+      , pairs.SaO2_timestamp
+      , TIMESTAMP_DIFF(pairs.SaO2_timestamp, aniongap.charttime, MINUTE) AS delta_aniongap
+      , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
+                          ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, aniongap.charttime, MINUTE)) ASC ) AS seq
+      , aniongap.aniongap
+
+    FROM `golden-rite-376204.mimiciii_pulseOx.SaO2_SpO2_pairs` pairs
+
+    LEFT JOIN `physionet-data.mimiciii_derived.pivoted_lab` aniongap
+
+    ON aniongap.subject_id = pairs.subject_id
+    AND aniongap.aniongap IS NOT NULL
+      
+    ) 
+    WHERE seq = 1
+)
+, ph AS(
+
+  SELECT * FROM (
+    SELECT
+        pairs.icustay_id
+      , pairs.SaO2_timestamp
+      , TIMESTAMP_DIFF(pairs.SaO2_timestamp, ph.charttime, MINUTE) AS delta_ph
+      , ROW_NUMBER() OVER(PARTITION BY pairs.icustay_id, pairs.SaO2_timestamp
+                          ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, ph.charttime, MINUTE)) ASC ) AS seq
+      , ph.ph
+
+    FROM `golden-rite-376204.mimiciii_pulseOx.SaO2_SpO2_pairs` pairs
+
+    LEFT JOIN `physionet-data.mimiciii_derived.pivoted_bg` ph
+
+    ON ph.icustay_id = pairs.icustay_id
+    AND ph.ph IS NOT NULL
       
     ) 
     WHERE seq = 1
@@ -184,18 +231,16 @@ SELECT
   , pairs.delta_SpO2
   , pairs.SpO2
   , pairs.hidden_hypoxemia
-  , hemoglobin.delta_hemoglobin
-  , hemoglobin.hemoglobin
-  , hematocrit.delta_hematocrit
-  , hematocrit.hematocrit
-  , rr.delta_resprate
-  , rr.resprate
-  , tmp.delta_temperature
-  , tmp.temperature
-  , glc.delta_glucose
-  , glc.glucose
   , bicarbonate.delta_bicarbonate
   , bicarbonate.bicarbonate
+  , ph.delta_ph
+  , ph.ph
+  , bun.delta_bun
+  , bun.bun
+  , albumin.delta_albumin
+  , albumin.albumin
+  , aniongap.delta_aniongap
+  , aniongap.aniongap
   , calcium.delta_calcium
   , calcium.calcium
   , chloride.delta_chloride
@@ -209,33 +254,29 @@ SELECT
 
 FROM `golden-rite-376204.mimiciii_pulseOx.SaO2_SpO2_pairs` pairs
 
-LEFT JOIN hemoglobin
-ON hemoglobin.icustay_id = pairs.icustay_id
-AND hemoglobin.SaO2_timestamp = pairs.SaO2_timestamp
-
-LEFT JOIN hematocrit
-ON hematocrit.icustay_id = pairs.icustay_id
-AND hematocrit.SaO2_timestamp = pairs.SaO2_timestamp
-
-LEFT JOIN rr
-ON rr.icustay_id = pairs.icustay_id
-AND rr.SaO2_timestamp = pairs.SaO2_timestamp
-
-LEFT JOIN tmp
-ON tmp.icustay_id = pairs.icustay_id
-AND tmp.SaO2_timestamp = pairs.SaO2_timestamp
-
-LEFT JOIN glc
-ON glc.icustay_id = pairs.icustay_id
-AND glc.SaO2_timestamp = pairs.SaO2_timestamp
-
 LEFT JOIN bicarbonate
 ON bicarbonate.icustay_id = pairs.icustay_id
 AND bicarbonate.SaO2_timestamp = pairs.SaO2_timestamp
 
+LEFT JOIN ph
+ON ph.icustay_id = pairs.icustay_id
+AND ph.SaO2_timestamp = pairs.SaO2_timestamp
+
 LEFT JOIN calcium
 ON calcium.icustay_id = pairs.icustay_id
 AND calcium.SaO2_timestamp = pairs.SaO2_timestamp
+
+LEFT JOIN bun
+ON bun.subject_id = pairs.subject_id
+AND bun.SaO2_timestamp = pairs.SaO2_timestamp
+
+LEFT JOIN albumin
+ON albumin.subject_id = pairs.subject_id
+AND albumin.SaO2_timestamp = pairs.SaO2_timestamp
+
+LEFT JOIN aniongap
+ON aniongap.subject_id = pairs.subject_id
+AND aniongap.SaO2_timestamp = pairs.SaO2_timestamp
 
 LEFT JOIN chloride
 ON chloride.icustay_id = pairs.icustay_id
@@ -252,3 +293,5 @@ AND sodium.SaO2_timestamp = pairs.SaO2_timestamp
 LEFT JOIN potassium
 ON potassium.icustay_id = pairs.icustay_id
 AND potassium.SaO2_timestamp = pairs.SaO2_timestamp
+
+ORDER BY subject_id, icustay_id, SaO2_timestamp
