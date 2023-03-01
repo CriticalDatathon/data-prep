@@ -1,4 +1,4 @@
--- Chemistry Values include bicarbonate, calcium, chloride, glucose (from the lab), sodium, potassium, pH, bun, albumin, aniongap
+-- Chemistry Values include bicarbonate, calcium, chloride, glucose (from the lab), sodium, potassium, pH, bun, albumin, aniongap, lactate and creatinine.
 
 DROP TABLE IF EXISTS `golden-rite-376204.mimiciii_pulseOx.pairs_blood_vitals`;
 CREATE TABLE `golden-rite-376204.mimiciii_pulseOx.pairs_blood_vitals` AS
@@ -113,6 +113,28 @@ potassium AS(
     ) 
     WHERE seq = 1
 )
+
+, lactate AS(
+
+  SELECT * FROM (
+    SELECT
+        pairs.subject_id
+      , pairs.SaO2_timestamp
+      , TIMESTAMP_DIFF(pairs.SaO2_timestamp, lactate.charttime, MINUTE) AS delta_lactate
+      , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
+                          ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, lactate.charttime, MINUTE)) ASC ) AS seq
+      , lactate.lactate
+
+    FROM `golden-rite-376204.mimiciii_pulseOx.SaO2_SpO2_pairs` pairs
+
+    LEFT JOIN `physionet-data.mimiciii_derived.pivoted_lab` lactate
+
+    ON lactate.subject_id = pairs.subject_id
+    AND lactate.lactate IS NOT NULL
+      
+    ) 
+    WHERE seq = 1
+)
 , ph AS(
 
   SELECT * FROM (
@@ -223,6 +245,28 @@ potassium AS(
     WHERE seq = 1
 )
 
+, creatinine AS(
+
+  SELECT * FROM (
+    SELECT
+        pairs.icustay_id
+      , pairs.SaO2_timestamp
+      , TIMESTAMP_DIFF(pairs.SaO2_timestamp, creatinine.charttime, MINUTE) AS delta_creatinine
+      , ROW_NUMBER() OVER(PARTITION BY pairs.icustay_id, pairs.SaO2_timestamp
+                          ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, creatinine.charttime, MINUTE)) ASC ) AS seq
+      , creatinine.creat as creatinine
+
+    FROM `golden-rite-376204.mimiciii_pulseOx.SaO2_SpO2_pairs` pairs
+
+    LEFT JOIN `physionet-data.mimiciii_derived.kdigo_creatinine` creatinine
+
+    ON creatinine.icustay_id = pairs.icustay_id
+    AND creatinine.creat IS NOT NULL
+      
+    ) 
+    WHERE seq = 1
+)
+
 SELECT 
     pairs.subject_id
   , pairs.icustay_id
@@ -241,6 +285,8 @@ SELECT
   , albumin.albumin
   , aniongap.delta_aniongap
   , aniongap.aniongap
+  , lactate.delta_lactate
+  , lactate.lactate
   , calcium.delta_calcium
   , calcium.calcium
   , chloride.delta_chloride
@@ -251,6 +297,8 @@ SELECT
   , sodium.sodium
   , potassium.delta_potassium
   , potassium.potassium
+  , creatinine.delta_creatinine
+  , creatinine.creatinine
 
 FROM `golden-rite-376204.mimiciii_pulseOx.SaO2_SpO2_pairs` pairs
 
@@ -278,6 +326,10 @@ LEFT JOIN aniongap
 ON aniongap.subject_id = pairs.subject_id
 AND aniongap.SaO2_timestamp = pairs.SaO2_timestamp
 
+LEFT JOIN lactate
+ON lactate.subject_id = pairs.subject_id
+AND lactate.SaO2_timestamp = pairs.SaO2_timestamp
+
 LEFT JOIN chloride
 ON chloride.icustay_id = pairs.icustay_id
 AND chloride.SaO2_timestamp = pairs.SaO2_timestamp
@@ -289,6 +341,10 @@ AND glucose_lab.SaO2_timestamp = pairs.SaO2_timestamp
 LEFT JOIN sodium
 ON sodium.icustay_id = pairs.icustay_id
 AND sodium.SaO2_timestamp = pairs.SaO2_timestamp
+
+LEFT JOIN creatinine
+ON creatinine.icustay_id = pairs.icustay_id
+AND creatinine.SaO2_timestamp = pairs.SaO2_timestamp
 
 LEFT JOIN potassium
 ON potassium.icustay_id = pairs.icustay_id
