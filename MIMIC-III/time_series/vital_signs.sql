@@ -1,4 +1,4 @@
--- Vital signs include heart rate, blood pressure, respiration rate, temperature, glucose. Missing: rhythm
+-- Vital signs include heart rate, blood pressure, respiration rate, temperature, glucose, rhythm
 
 DROP TABLE IF EXISTS `golden-rite-376204.mimiciii_pulseOx.vital_signs`;
 CREATE TABLE `golden-rite-376204.mimiciii_pulseOx.vital_signs` AS
@@ -116,27 +116,59 @@ hr AS(
     WHERE seq = 1
 )
 
+, rhythm AS (
+  SELECT * FROM(
+    SELECT
+      pairs.subject_id
+    , heart_rhythm
+    , pairs.SaO2_timestamp
+    , TIMESTAMP_DIFF(rh.charttime, pairs.SaO2_timestamp, MINUTE) AS delta_heart_rhythm
+    , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
+                        ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, rh.charttime, MINUTE)) ASC) AS seq
+
+    FROM `golden-rite-376204.mimiciii_pulseOx.SaO2_SpO2_pairs` pairs
+
+    LEFT JOIN `golden-rite-376204.mimiciii_pulseOx.heart_rhythm`
+    AS rh
+    ON rh.subject_id = pairs.subject_id
+    AND heart_rhythm IS NOT NULL
+
+  ) 
+  WHERE seq = 1
+
+)
 
 SELECT 
     pairs.subject_id
   , pairs.icustay_id
   , pairs.SaO2_timestamp
-  , pairs.SaO2
-  , pairs.delta_SpO2
-  , pairs.SpO2
-  , pairs.hidden_hypoxemia
+  , hr.delta_heart_rate
+  , hr.heart_rate
+  , mbp.delta_mbp
+  , mbp.mbp
   , rr.delta_resp_rate
   , rr.resp_rate
   , tmp.delta_temperature
   , tmp.temperature
   , glc.delta_glucose
   , glc.glucose
+  , rhythm.delta_heart_rhythm
+  , rhythm.heart_rhythm
+
 
 FROM `golden-rite-376204.mimiciii_pulseOx.SaO2_SpO2_pairs` pairs
+
+LEFT JOIN hr
+ON hr.icustay_id = pairs.icustay_id
+AND hr.SaO2_timestamp = pairs.SaO2_timestamp
 
 LEFT JOIN rr
 ON rr.icustay_id = pairs.icustay_id
 AND rr.SaO2_timestamp = pairs.SaO2_timestamp
+
+LEFT JOIN mbp
+ON mbp.icustay_id = pairs.icustay_id
+AND mbp.SaO2_timestamp = pairs.SaO2_timestamp
 
 LEFT JOIN tmp
 ON tmp.icustay_id = pairs.icustay_id
@@ -145,3 +177,9 @@ AND tmp.SaO2_timestamp = pairs.SaO2_timestamp
 LEFT JOIN glc
 ON glc.icustay_id = pairs.icustay_id
 AND glc.SaO2_timestamp = pairs.SaO2_timestamp
+
+LEFT JOIN rhythm
+ON rhythm.subject_id = pairs.subject_id
+AND rhythm.SaO2_timestamp = pairs.SaO2_timestamp
+
+ORDER BY subject_id, icustay_id, SaO2_timestamp

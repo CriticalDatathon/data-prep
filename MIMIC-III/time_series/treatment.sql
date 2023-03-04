@@ -1,4 +1,4 @@
--- NOT DONE!!! Treatments: FiO2, RRT. Missing: ventilation, type, Vasopressor, AND dose
+-- Treatments: FiO2, RRT. Missing: ventilation, type, Vasopressor, AND dose
 
 DROP TABLE IF EXISTS `golden-rite-376204.mimiciii_pulseOx.treatment`;
 CREATE TABLE `golden-rite-376204.mimiciii_pulseOx.treatment` AS
@@ -33,6 +33,30 @@ WITH
 
 )
 
+, vp AS (
+
+  SELECT * FROM(
+    SELECT
+      pairs.icustay_id
+    , norepinephrine_equivalent_dose
+    , pairs.SaO2_timestamp
+    , TIMESTAMP_DIFF(vp.starttime, pairs.SaO2_timestamp, MINUTE) AS delta_vp_start
+    , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
+                        ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, vp.endtime, MINUTE)) ASC) AS seq -- pick the value closest to end
+
+    FROM `golden-rite-376204.mimiciii_pulseOx.SaO2_SpO2_pairs` pairs
+
+    LEFT JOIN `golden-rite-376204.mimiciii_pulseOx.norepinephrine_equivalent_dose`
+    AS vp
+    ON vp.icustay_id = pairs.icustay_id
+    AND (pairs.SaO2_timestamp BETWEEN vp.starttime AND vp.endtime)  
+    AND vp.norepinephrine_equivalent_dose IS NOT NULL
+
+  ) 
+  WHERE seq = 1
+
+) 
+
 , rrt AS(
 
   SELECT * FROM(
@@ -41,7 +65,7 @@ WITH
     , dialysis_present AS rrt
     , pairs.SaO2_timestamp
     , TIMESTAMP_DIFF(rrt.charttime, pairs.SaO2_timestamp, MINUTE) AS delta_rrt
-    , ROW_NUMBER() OVER(PARTITION BY pairs.stay_id, pairs.SaO2_timestamp
+    , ROW_NUMBER() OVER(PARTITION BY pairs.icustay_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, rrt.charttime, MINUTE)) ASC) AS seq
 
     FROM `golden-rite-376204.mimiciii_pulseOx.SaO2_SpO2_pairs` pairs
@@ -59,10 +83,12 @@ WITH
 
 SELECT 
     pairs.subject_id
-  , pairs.stay_id
+  , pairs.icustay_id
   , pairs.SaO2_timestamp
   , vent.delta_vent_start
   , vent.ventilation_status
+  , vp.delta_vp_start
+  , vp.norepinephrine_equivalent_dose
   , bg.delta_FiO2
   , bg.FiO2
 
@@ -79,7 +105,11 @@ ON bg.subject_id = pairs.subject_id
 AND bg.SaO2_timestamp = pairs.SaO2_timestamp
 
 LEFT JOIN rrt
-ON rrt.stay_id = pairs.stay_id
+ON rrt.icustay_id = pairs.icustay_id
 AND rrt.SaO2_timestamp = pairs.SaO2_timestamp
 
-ORDER BY subject_id, stay_id, SaO2_timestamp ASC
+LEFT JOIN vp
+ON vp.icustay_id = pairs.icustay_id
+AND vp.SaO2_timestamp = pairs.SaO2_timestamp
+
+ORDER BY subject_id, icustay_id, SaO2_timestamp ASC
