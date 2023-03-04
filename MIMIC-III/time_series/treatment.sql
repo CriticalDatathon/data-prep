@@ -1,9 +1,9 @@
--- Treatments: FiO2, RRT. Missing: ventilation, type, Vasopressor, AND dose
+-- Treatments: FiO2, RRT, Vasopressor, dose. Missing: ventilation, type.
 
 DROP TABLE IF EXISTS `golden-rite-376204.mimiciii_pulseOx.treatment`;
 CREATE TABLE `golden-rite-376204.mimiciii_pulseOx.treatment` AS
 
-WITH 
+WITH
   bg AS (
 
   SELECT * FROM(
@@ -11,7 +11,6 @@ WITH
       pairs.icustay_id
     , CASE 
         WHEN fio2 IS NOT NULL THEN fio2
-        WHEN fio2_chartevents IS NOT NULL THEN fio2_chartevents 
         ELSE NULL
       END
       AS FiO2
@@ -26,7 +25,7 @@ WITH
     AS bg
     ON bg.icustay_id = pairs.icustay_id
     AND bg.charttime <= pairs.SaO2_timestamp -- only looking at past values
-    AND COALESCE(fio2,fio2_chartevents) IS NOT NULL
+    AND COALESCE(fio2) IS NOT NULL
 
   ) 
   WHERE seq = 1
@@ -85,8 +84,6 @@ SELECT
     pairs.subject_id
   , pairs.icustay_id
   , pairs.SaO2_timestamp
-  , vent.delta_vent_start
-  , vent.ventilation_status
   , vp.delta_vp_start
   , vp.norepinephrine_equivalent_dose
   , bg.delta_FiO2
@@ -101,7 +98,7 @@ SELECT
 FROM `golden-rite-376204.mimiciii_pulseOx.SaO2_SpO2_pairs` pairs
 
 LEFT JOIN bg
-ON bg.subject_id = pairs.subject_id
+ON bg.icustay_id = pairs.icustay_id
 AND bg.SaO2_timestamp = pairs.SaO2_timestamp
 
 LEFT JOIN rrt
