@@ -44,6 +44,12 @@ SELECT DISTINCT
   , icu.los_icu
   , charlson.charlson_comorbidity_index AS CCI    
   , sf.SOFA AS SOFA_admission
+  , CASE WHEN (
+         discharge_location = "DIED"
+      OR discharge_location = "HOSPICE"
+  ) THEN 1
+    ELSE 0
+  END AS mortality_in
 
 -- ICU stays
 FROM physionet-data.mimiciv_derived.icustay_detail
