@@ -1,7 +1,7 @@
 -- Chemistry Values include albumin, aniongap, bicarbonate, bun, calcium, chloride, glucose (from the lab), sodium, potassium, ph
 
-DROP TABLE IF EXISTS `golden-rite-376204.mimiciv_pulseOx.pairs_blood_vitals`;
-CREATE TABLE `golden-rite-376204.mimiciv_pulseOx.pairs_blood_vitals` AS
+DROP TABLE IF EXISTS `db_name.mimiciv_pulseOx.pairs_blood_vitals`;
+CREATE TABLE `db_name.mimiciv_pulseOx.pairs_blood_vitals` AS
 
 WITH 
 
@@ -15,7 +15,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, chem.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.chemistry` 
     AS chem
@@ -36,7 +36,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, chem.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.chemistry` 
     AS chem
@@ -59,7 +59,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, chem.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.chemistry` 
     AS chem
@@ -81,7 +81,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, chem.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.chemistry` 
     AS chem
@@ -103,7 +103,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, chem.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.chemistry` 
     AS chem
@@ -125,7 +125,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, chem.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.chemistry` 
     AS chem
@@ -147,7 +147,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, chem.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.chemistry` 
     AS chem
@@ -169,7 +169,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, chem.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.chemistry` 
     AS chem
@@ -191,7 +191,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, chem.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.chemistry` 
     AS chem
@@ -213,7 +213,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, chem.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.chemistry` 
     AS chem
@@ -235,7 +235,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, bg.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.bg` 
     AS bg
@@ -257,7 +257,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, bg.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.bg` 
     AS bg
@@ -298,7 +298,7 @@ SELECT
   , lactate.delta_lactate
   , lactate.lactate
 
-FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
 LEFT JOIN albumin
 ON albumin.subject_id = pairs.subject_id

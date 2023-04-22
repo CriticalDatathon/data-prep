@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS `golden-rite-376204.mimiciv_pulseOx.patient_ICU`;
-CREATE TABLE `golden-rite-376204.mimiciv_pulseOx.patient_ICU` AS
+DROP TABLE IF EXISTS `db_name.mimiciv_pulseOx.patient_ICU`;
+CREATE TABLE `db_name.mimiciv_pulseOx.patient_ICU` AS
 
 SELECT DISTINCT
     icu.subject_id
@@ -29,6 +29,7 @@ SELECT DISTINCT
       ELSE "Other"
     END AS race_group
   , ad.language
+  , ad.insurance
   , weight.weight_admit AS weight
   , height.height
   , weight.weight_admit / (POWER(height.height/100, 2)) AS BMI

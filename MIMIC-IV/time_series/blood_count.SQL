@@ -1,7 +1,7 @@
 -- Blood Values include hemoglobin, hematocrit, mch, mchc, mcv, platelet, rbc, rdw, wbc
 
-DROP TABLE IF EXISTS `golden-rite-376204.mimiciv_pulseOx.blood_count`;
-CREATE TABLE `golden-rite-376204.mimiciv_pulseOx.blood_count` AS
+DROP TABLE IF EXISTS `db_name.mimiciv_pulseOx.blood_count`;
+CREATE TABLE `db_name.mimiciv_pulseOx.blood_count` AS
 
 WITH 
   hemoglobin AS (
@@ -14,7 +14,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, blood_counts.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.complete_blood_count` 
     AS blood_counts
@@ -36,7 +36,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, blood_counts.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.complete_blood_count` 
     AS blood_counts
@@ -58,7 +58,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, blood_counts.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.complete_blood_count` 
     AS blood_counts
@@ -80,7 +80,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, blood_counts.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.complete_blood_count` 
     AS blood_counts
@@ -102,7 +102,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, blood_counts.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.complete_blood_count` 
     AS blood_counts
@@ -124,7 +124,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, blood_counts.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.complete_blood_count` 
     AS blood_counts
@@ -146,7 +146,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, blood_counts.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.complete_blood_count` 
     AS blood_counts
@@ -168,7 +168,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, blood_counts.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.complete_blood_count` 
     AS blood_counts
@@ -190,7 +190,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, blood_counts.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.complete_blood_count` 
     AS blood_counts
@@ -226,7 +226,7 @@ SELECT
   , wbc.delta_wbc
   , wbc.wbc
 
-FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
 LEFT JOIN hemoglobin
 ON hemoglobin.subject_id = pairs.subject_id

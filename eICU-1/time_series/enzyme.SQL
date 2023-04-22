@@ -4,8 +4,8 @@
 -- bilirubin_indirect does not exist in eICU
 -- -- ggt missing
 
-DROP TABLE IF EXISTS `golden-rite-376204.eicu1_pulseOx.enzyme`;
-CREATE TABLE `golden-rite-376204.eicu1_pulseOx.enzyme` AS
+DROP TABLE IF EXISTS `db_name.eicu1_pulseOx.enzyme`;
+CREATE TABLE `db_name.eicu1_pulseOx.enzyme` AS
 
 WITH 
 
@@ -19,9 +19,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS enz
     ON enz.patientunitstayid = pairs.patientunitstayid
     AND alt IS NOT NULL
@@ -40,9 +40,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS enz
     ON enz.patientunitstayid = pairs.patientunitstayid
     AND alp IS NOT NULL
@@ -61,9 +61,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS enz
     ON enz.patientunitstayid = pairs.patientunitstayid
     AND ast IS NOT NULL
@@ -83,9 +83,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS enz
     ON enz.patientunitstayid = pairs.patientunitstayid
     AND bilirubin_total IS NOT NULL
@@ -105,9 +105,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS enz
     ON enz.patientunitstayid = pairs.patientunitstayid
     AND bilirubin_direct IS NOT NULL
@@ -129,9 +129,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS enz
     ON enz.patientunitstayid = pairs.patientunitstayid
     AND ck_cpk IS NOT NULL
@@ -151,9 +151,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS enz
     ON enz.patientunitstayid = pairs.patientunitstayid
     AND ck_mb IS NOT NULL
@@ -175,9 +175,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS enz
     ON enz.patientunitstayid = pairs.patientunitstayid
     AND ld_ldh IS NOT NULL
@@ -208,7 +208,7 @@ SELECT
   , ld_ldh.delta_ld_ldh
   , ld_ldh.ld_ldh
 
-FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
 LEFT JOIN alt
 ON alt.patientunitstayid = pairs.patientunitstayid

@@ -1,7 +1,7 @@
 -- Coagualtion Values include d_dimer, fibrinogen, thrombin, inr (international normalized ratio), pt (prothrombin time), ptt (partial thromboplastin time)
 
-DROP TABLE IF EXISTS `golden-rite-376204.eicu1_pulseOx.coagulation`;
-CREATE TABLE `golden-rite-376204.eicu1_pulseOx.coagulation` AS
+DROP TABLE IF EXISTS `db_name.eicu1_pulseOx.coagulation`;
+CREATE TABLE `db_name.eicu1_pulseOx.coagulation` AS
 
 WITH 
 
@@ -16,9 +16,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2` 
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2` 
     AS coag
     ON coag.patientunitstayid = pairs.patientunitstayid
     AND fibrinogen IS NOT NULL
@@ -39,9 +39,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2` 
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2` 
     AS coag
     ON coag.patientunitstayid = pairs.patientunitstayid
     AND inr IS NOT NULL
@@ -61,9 +61,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2` 
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2` 
     AS coag
     ON coag.patientunitstayid = pairs.patientunitstayid
     AND pt IS NOT NULL
@@ -83,9 +83,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2` 
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2` 
     AS coag
     ON coag.patientunitstayid = pairs.patientunitstayid
     AND ptt IS NOT NULL
@@ -107,7 +107,7 @@ SELECT
   , ptt.delta_ptt
   , ptt.ptt
 
-FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
 LEFT JOIN fibrinogen
 ON fibrinogen.patientunitstayid = pairs.patientunitstayid

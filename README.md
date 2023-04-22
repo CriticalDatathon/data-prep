@@ -5,7 +5,7 @@ Once you're credentialed on PhysioNet:
 
 [Recommended Environment: BigQuery](https://console.cloud.google.com/bigquery)
 
-[Shared Project on BigQuery](https://console.cloud.google.com/bigquery?project=golden-rite-376204)
+[Shared Project on BigQuery](https://console.cloud.google.com/bigquery?project=db_name)
 
 [Variables to collect](https://docs.google.com/spreadsheets/d/16w0sDQiFTde9O5jp4JLtl91oONw9g16B-oj9Eo9Rr0E/edit#gid=0)
 

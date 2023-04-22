@@ -1,7 +1,7 @@
 -- Treatments: ventilation, type, FiO2, RRT, Vasopressor, AND dose
 
-DROP TABLE IF EXISTS `golden-rite-376204.mimiciv_pulseOx.treatment`;
-CREATE TABLE `golden-rite-376204.mimiciv_pulseOx.treatment` AS
+DROP TABLE IF EXISTS `db_name.mimiciv_pulseOx.treatment`;
+CREATE TABLE `db_name.mimiciv_pulseOx.treatment` AS
 
 WITH 
   vent AS (
@@ -15,7 +15,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, vent.endtime, MINUTE)) ASC) AS seq -- pick the value closest to end
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.ventilation` 
     AS vent
@@ -44,7 +44,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, bg.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.bg` 
     AS bg
@@ -68,7 +68,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.stay_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, rrt.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.rrt` 
     AS rrt
@@ -92,7 +92,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, vp.endtime, MINUTE)) ASC) AS seq -- pick the value closest to end
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.norepinephrine_equivalent_dose` 
     AS vp
@@ -137,7 +137,7 @@ SELECT
   , vp.delta_vp_start
   , vp.norepinephrine_equivalent_dose
 
-FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
 LEFT JOIN vent
 ON vent.stay_id = pairs.stay_id

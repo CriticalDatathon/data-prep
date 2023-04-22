@@ -1,8 +1,8 @@
 -- enzyme Values include liver/abdominal markers from the lab
 -- alt, alp, ast, bilirubin_total, bilirubin_direct, bilirubin_indirect, ck_cpk, ck_mb, ggt, ld_ldh
 
-DROP TABLE IF EXISTS `golden-rite-376204.mimiciv_pulseOx.enzyme`;
-CREATE TABLE `golden-rite-376204.mimiciv_pulseOx.enzyme` AS
+DROP TABLE IF EXISTS `db_name.mimiciv_pulseOx.enzyme`;
+CREATE TABLE `db_name.mimiciv_pulseOx.enzyme` AS
 
 WITH 
 
@@ -16,7 +16,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, enz.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.enzyme` 
     AS enz
@@ -37,7 +37,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, enz.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.enzyme` 
     AS enz
@@ -58,7 +58,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, enz.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.enzyme` 
     AS enz
@@ -80,7 +80,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, enz.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.enzyme` 
     AS enz
@@ -102,7 +102,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, enz.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.enzyme` 
     AS enz
@@ -124,7 +124,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, enz.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.enzyme` 
     AS enz
@@ -146,7 +146,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, enz.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.enzyme` 
     AS enz
@@ -168,7 +168,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, enz.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.enzyme` 
     AS enz
@@ -190,7 +190,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, enz.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.enzyme` 
     AS enz
@@ -212,7 +212,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, enz.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.enzyme` 
     AS enz
@@ -250,7 +250,7 @@ SELECT
   , ld_ldh.delta_ld_ldh
   , ld_ldh.ld_ldh
 
-FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
 LEFT JOIN alt
 ON alt.subject_id = pairs.subject_id

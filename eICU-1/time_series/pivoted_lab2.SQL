@@ -1,7 +1,7 @@
 -- Generate our own lab table based on LCP code
 
-DROP TABLE IF EXISTS `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`;
-CREATE TABLE `golden-rite-376204.eicu1_pulseOx.pivoted_lab2` AS
+DROP TABLE IF EXISTS `db_name.eicu1_pulseOx.pivoted_lab2`;
+CREATE TABLE `db_name.eicu1_pulseOx.pivoted_lab2` AS
 
 -- not exisitng in eICU
 -- d_dimer

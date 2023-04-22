@@ -1,7 +1,7 @@
 -- Blood Values include hemoglobin, hematocrit, mch, mchc, mcv, platelets, rbc, rdw, wbc
 
-DROP TABLE IF EXISTS `golden-rite-376204.eicu1_pulseOx.blood_count`;
-CREATE TABLE `golden-rite-376204.eicu1_pulseOx.blood_count` AS
+DROP TABLE IF EXISTS `db_name.eicu1_pulseOx.blood_count`;
+CREATE TABLE `db_name.eicu1_pulseOx.blood_count` AS
 
 WITH 
   hemoglobin AS (
@@ -14,9 +14,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS blood_counts
     ON blood_counts.patientunitstayid = pairs.patientunitstayid
     AND hemoglobin IS NOT NULL
@@ -36,9 +36,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS blood_counts
     ON blood_counts.patientunitstayid = pairs.patientunitstayid
     AND hematocrit IS NOT NULL
@@ -58,9 +58,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS blood_counts
     ON blood_counts.patientunitstayid = pairs.patientunitstayid
     AND mch IS NOT NULL
@@ -80,9 +80,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS blood_counts
     ON blood_counts.patientunitstayid = pairs.patientunitstayid
     AND mchc IS NOT NULL
@@ -102,9 +102,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS blood_counts
     ON blood_counts.patientunitstayid = pairs.patientunitstayid
     AND mcv IS NOT NULL
@@ -124,9 +124,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS blood_counts
     ON blood_counts.patientunitstayid = pairs.patientunitstayid
     AND platelets IS NOT NULL
@@ -146,9 +146,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS blood_counts
     ON blood_counts.patientunitstayid = pairs.patientunitstayid
     AND rbc IS NOT NULL
@@ -168,9 +168,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS blood_counts
     ON blood_counts.patientunitstayid = pairs.patientunitstayid
     AND rdw IS NOT NULL
@@ -190,9 +190,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS blood_counts
     ON blood_counts.patientunitstayid = pairs.patientunitstayid
     AND wbc IS NOT NULL
@@ -225,7 +225,7 @@ SELECT
   , wbc.delta_wbc
   , wbc.wbc
 
-FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
 LEFT JOIN hemoglobin
 ON hemoglobin.patientunitstayid = pairs.patientunitstayid

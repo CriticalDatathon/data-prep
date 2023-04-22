@@ -1,5 +1,5 @@
-drop table if exists `golden-rite-376204.charlson_comorbidity_index`;
-create table `golden-rite-376204.charlson_comorbidity_index` as
+drop table if exists `db_name.charlson_comorbidity_index`;
+create table `db_name.charlson_comorbidity_index` as
 
 --forked from https://github.com/theonesp/vol_leak_index/blob/master/eicu_vli/analysis/sql/charlson_score.sql
 WITH

@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS `golden-rite-376204.eicu1_pulseOx.patient_ICU`;
-CREATE TABLE `golden-rite-376204.eicu1_pulseOx.patient_ICU` AS
+DROP TABLE IF EXISTS `db_name.eicu1_pulseOx.patient_ICU`;
+CREATE TABLE `db_name.eicu1_pulseOx.patient_ICU` AS
 
 SELECT DISTINCT
     icu.patienthealthsystemstayid 

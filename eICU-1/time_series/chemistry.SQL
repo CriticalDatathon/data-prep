@@ -1,7 +1,7 @@
 -- Chemistry Values include albumin, aniongap, bicarbonate, bun, calcium, chloride, glucose (from the lab), sodium, potassium, ph
 
-DROP TABLE IF EXISTS `golden-rite-376204.eicu1_pulseOx.pairs_blood_vitals`;
-CREATE TABLE `golden-rite-376204.eicu1_pulseOx.pairs_blood_vitals` AS
+DROP TABLE IF EXISTS `db_name.eicu1_pulseOx.pairs_blood_vitals`;
+CREATE TABLE `db_name.eicu1_pulseOx.pairs_blood_vitals` AS
 
 WITH 
 
@@ -15,9 +15,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS chem
     ON chem.patientunitstayid = pairs.patientunitstayid
     AND albumin IS NOT NULL
@@ -36,7 +36,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.eicu_crd_derived.pivoted_bg`
     AS chem
@@ -59,9 +59,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS chem
     ON chem.patientunitstayid = pairs.patientunitstayid
     AND bicarbonate IS NOT NULL
@@ -81,9 +81,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS chem
     ON chem.patientunitstayid = pairs.patientunitstayid
     AND bun IS NOT NULL
@@ -103,9 +103,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS chem
     ON chem.patientunitstayid = pairs.patientunitstayid
     AND calcium IS NOT NULL
@@ -125,9 +125,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS chem
     ON chem.patientunitstayid = pairs.patientunitstayid
     AND chloride IS NOT NULL
@@ -147,9 +147,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS chem
     ON chem.patientunitstayid = pairs.patientunitstayid
     AND creatinine IS NOT NULL
@@ -169,9 +169,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS chem
     ON chem.patientunitstayid = pairs.patientunitstayid
     AND glucose IS NOT NULL
@@ -191,9 +191,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS chem
     ON chem.patientunitstayid = pairs.patientunitstayid
     AND sodium IS NOT NULL
@@ -213,9 +213,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS chem
     ON chem.patientunitstayid = pairs.patientunitstayid
     AND potassium IS NOT NULL
@@ -235,7 +235,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.eicu_crd_derived.pivoted_bg` 
     AS bg
@@ -257,9 +257,9 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.patientunitstayid, pairs.SaO2_offset
                         ORDER BY ABS(chartoffset - SaO2_offset) ASC) AS seq
 
-    FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
-    LEFT JOIN `golden-rite-376204.eicu1_pulseOx.pivoted_lab2`
+    LEFT JOIN `db_name.eicu1_pulseOx.pivoted_lab2`
     AS chem
     ON chem.patientunitstayid = pairs.patientunitstayid
     AND lactate IS NOT NULL
@@ -297,7 +297,7 @@ SELECT
   , lactate.delta_lactate
   , lactate.lactate
 
-FROM `golden-rite-376204.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
+FROM `db_name.eicu1_pulseOx.SaO2_SpO2_pairs` pairs
 
 LEFT JOIN albumin
 ON albumin.patientunitstayid = pairs.patientunitstayid

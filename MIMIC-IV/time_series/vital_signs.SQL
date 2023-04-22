@@ -1,7 +1,7 @@
 -- Vital signs include heart rate, blood pressure, respiration rate, temperature, glucose, AND rhythm
 
-DROP TABLE IF EXISTS `golden-rite-376204.mimiciv_pulseOx.vital_signs`;
-CREATE TABLE `golden-rite-376204.mimiciv_pulseOx.vital_signs` AS
+DROP TABLE IF EXISTS `db_name.mimiciv_pulseOx.vital_signs`;
+CREATE TABLE `db_name.mimiciv_pulseOx.vital_signs` AS
 
 WITH 
   
@@ -16,7 +16,7 @@ WITH
                           ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, hr.charttime, MINUTE)) ASC ) AS seq
       , hr.heart_rate
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.vitalsign` hr
 
@@ -38,7 +38,7 @@ WITH
                           ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, rr.charttime, MINUTE)) ASC ) AS seq
       , rr.resp_rate
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.vitalsign` rr
 
@@ -61,7 +61,7 @@ WITH
                           ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, mbp.charttime, MINUTE)) ASC ) AS seq
       , mbp.mbp
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.vitalsign` mbp
 
@@ -83,7 +83,7 @@ WITH
                           ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, tmp.charttime, MINUTE)) ASC ) AS seq
       , tmp.temperature
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.vitalsign` tmp
 
@@ -105,7 +105,7 @@ WITH
                           ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, glc.charttime, MINUTE)) ASC ) AS seq
       , glc.glucose
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.vitalsign` glc
 
@@ -126,7 +126,7 @@ WITH
     , ROW_NUMBER() OVER(PARTITION BY pairs.subject_id, pairs.SaO2_timestamp
                         ORDER BY ABS(TIMESTAMP_DIFF(pairs.SaO2_timestamp, rh.charttime, MINUTE)) ASC) AS seq
 
-    FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+    FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
     LEFT JOIN `physionet-data.mimiciv_derived.rhythm` 
     AS rh
@@ -155,7 +155,7 @@ SELECT
   , rhythm.delta_heart_rhythm
   , rhythm.heart_rhythm
 
-FROM `golden-rite-376204.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
+FROM `db_name.mimiciv_pulseOx.SaO2_SpO2_pairs` pairs
 
 LEFT JOIN hr
 ON hr.stay_id = pairs.stay_id
